@@ -172,7 +172,7 @@ od_admin.register(Post, PostAdmin)
 od_admin.register(PostImage, PostImageAdmin)
 ```
 
-6. Add `OCTOPUSDASH` config for site custmization 
+6. Add `OCTOPUSDASH` configuration for site customization
 
 ```python
 OCTOPUSDASH = {
