@@ -6,6 +6,18 @@ from django.http import JsonResponse
 from django.contrib import messages
 from octopusdash.admin.forms import DynamicModelForm
 from .views_mixin import ListviewFiltersMixin
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+class IsAdminIsStaffPermissionMixin:
+    
+    def dispatch(self,request,*args,**kwargs):
+        
+        if not request.user.is_superuser or not request.user.is_staff:
+            
+            return HttpResponseRedirect(reverse("octopusdash-login"))
+        
+        return super().dispatch(request,*args,**kwargs)
 
 class BaseView:
     @classmethod
@@ -18,9 +30,9 @@ class BaseView:
                 'extra_context': context,
             }
         )
+    
 
-
-class ModelListView(ListView, BaseView, ListviewFiltersMixin):
+class ModelListView(BaseView,ListView,ListviewFiltersMixin):
     paginate_by = 20
     template_name = 'od/model/list.html'
     context_object_name = 'objects'
