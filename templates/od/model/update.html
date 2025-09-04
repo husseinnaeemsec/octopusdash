@@ -1,5 +1,5 @@
 {% extends 'od/base.html' %}
-
+{% block title %}  {% if object %} Update {{object}} {% else %} Create new {{admin.opts.verbose_name}} {% endif %}  | {{block.super}}{% endblock %}
 {% block content %}
 <main class="lg:p-10 p-5 max-w-7xl mx-auto">
     {% if form.errors %}

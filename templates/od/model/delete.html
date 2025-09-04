@@ -1,5 +1,5 @@
 {% extends 'od/base.html' %}
-
+{% block title %} Delete {{object}} | {{block.super}}  {% endblock %}
 {% block content  %}
 {{form.errors}}
 <main class="lg:p-10 p-5 flex items-center justify-center w-full max-w-7xl mx-auto">

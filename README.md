@@ -104,7 +104,30 @@ INSTALLED_APPS = [
     # ...
 ]
 ```
-3. Include the OctopusDash URLs in your project’s main urls.py
+
+3. Add `octopusdash` global context:
+
+```python
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'octopusdash.context.octopusdash_context'
+            ],
+        },
+    },
+]
+```
+
+4. Include the OctopusDash URLs in your project’s main urls.py
 
 ```python
 from django.contrib import admin
@@ -116,7 +139,7 @@ urlpatterns = [
 ]
 ```
 
-4. Register your `models`:
+5. Register your `models`:
 
 ```python
 from octopusdash.admin import admin as od_admin, ModelAdmin, action
@@ -147,6 +170,16 @@ class PostImageAdmin(ModelAdmin):
 # Register models to OctopusDash
 od_admin.register(Post, PostAdmin)
 od_admin.register(PostImage, PostImageAdmin)
+```
+
+6. Add `OCTOPUSDASH` config for site custmization 
+
+```python
+OCTOPUSDASH = {
+    'SHOW_WIDGET_DOCS_LINK':False,
+    'SITE_TITLE':"My Site."
+}
+
 ```
 
 **Notes:**

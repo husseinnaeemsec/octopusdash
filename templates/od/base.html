@@ -13,10 +13,11 @@
     <script src="{% static 'od/js/search_menu.js' %}"></script>
     <script src="https://kit.fontawesome.com/fc06c118cb.js" crossorigin="anonymous"></script>
     <script src="{% static 'od/js/vendors/jquery.3.7.1.js' %}"></script>
+    <link rel="shortcut icon" href="{% static 'od/logo/32.svg' %}" type="image/x-icon">
     {% block extrahead %} 
     <!-- Extra header -->
     {% endblock extrahead %}
-    <title> Octopusdash V2 </title>
+    <title> {% block title %} {{settings.SITE_TITLE}} {% endblock %} </title>
 </head>
 
 <body class=" grid lg:grid-cols-[280px_1fr] gap-0 ">

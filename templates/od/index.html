@@ -1,5 +1,6 @@
 {% extends "od/base.html" %}
 {% load static %}
+{% block title %}Dashboard | {{block.super}}{% endblock %}
 {% block content %}
 <div class="flex flex-col items-center justify-center h-[80vh] text-center">
   <img src="{% static 'od/logo/128.svg' %}" alt="OctopusDash Logo" class="w-24 h-24 mb-6">

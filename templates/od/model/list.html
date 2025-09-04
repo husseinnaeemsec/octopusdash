@@ -7,6 +7,7 @@
 <script src="{% static 'od/js/inline_form.js' %}"></script>
 {% endblock  %}
 {% endif %}
+{% block title %} {{admin.opts.verbose_name_plural}} List | {{block.super}}{% endblock %}
 
 {% block content %}
 <main class="lg:p-10 p-5 space-y-10">
