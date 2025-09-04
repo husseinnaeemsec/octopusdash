@@ -1,25 +1,42 @@
-# views.py
-from django.shortcuts import render
-from django.views.generic import TemplateView,ListView
-from django import forms
-from octopusdash.admin.widgets import URLInput
-from octopusdash.admin.widgets.select import RadioOptionCard
-from octopusdash.admin.widgets.file import DragDropFileInput
-from octopusdash.models import AllFields
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.views import View
+from octopusdash.admin.views import IsAdminIsStaffPermissionMixin
+from django.contrib.auth import logout
+from django.urls import reverse
 
-class AllFieldsForm(forms.ModelForm):
-    
-    class Meta:
-        model = AllFields
-        fields = '__all__'
-        widgets = {
-            'char_field':RadioOptionCard(),
-            'file_field':DragDropFileInput()
-            
-        }
+class DashboardLoginView(View):
+    template_name = "od/auth/login.html"
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("octopusdash-index")  # redirect to dashboard index
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect("octopusdash-index")
+        else:
+            messages.error(request, "Invalid username or password")
+            return render(request, self.template_name)
 
 
-def index(request):
+class DashboardView(IsAdminIsStaffPermissionMixin,View):
+    template_name = 'od/index.html'
+    def get(self,request):
+        return render(request,self.template_name)
 
 
-    return render(request, 'od/index.html', {'form': AllFieldsForm()})
+def logout_view(request):
+    """
+    Logs out the current user and redirects to the login page.
+    """
+    logout(request)
+    return redirect(reverse("octopusdash-login"))
