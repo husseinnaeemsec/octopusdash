@@ -61,21 +61,62 @@ Edit objects directly in the table without reloading the entire page. Only forms
 
 ## Screenshots
 
-![Screenshot](screenshots/screenshot10.png)
 ![Screenshot](screenshots/screenshot1.png)
 ![Screenshot](screenshots/screenshot2.png)
+![Screenshot](screenshots/screenshot5.png)
 ![Screenshot](screenshots/screenshot3.png)
 ![Screenshot](screenshots/screenshot4.png)
-![Screenshot](screenshots/screenshot5.png)
-![Screenshot](screenshots/screenshot6.png)
-![Screenshot](screenshots/screenshot7.png)
-![Screenshot](screenshots/screenshot8.png)
-![Screenshot](screenshots/screenshot9.png)
 
 
 ---
 
-## Example Admin Registration
+
+
+## Quick Start
+
+### ⚠️ Important Note
+Currently, OctopusDash does not implement Permission validation
+It only checks if the user `is_supperuser` or `is_staff`
+This means:
+
+* Any user with these attributes set to True can have access to /dashboard/ and use it.
+
+* You are responsible for securing this route (e.g., using Django’s built-in authentication, middleware, or a reverse proxy).
+
+Authentication support is planned for a future release.
+
+To enable **OctopusDash**, follow these steps:
+
+1. Clone the repo into your `django` project:
+
+```bash
+
+git clone https://github.com/husseinaneemsec/octopusdash ./my_django_project/octopusdash
+
+```
+
+
+2. Add `octopusdash` to your `INSTALLED_APPS` in `settings.py`:
+
+```python
+INSTALLED_APPS = [
+    "octopusdash",
+    # ...
+]
+```
+3. Include the OctopusDash URLs in your project’s main urls.py
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("dashboard/", include("octopusdash.urls")),
+]
+```
+
+4. Register your `models`:
 
 ```python
 from octopusdash.admin import admin as od_admin, ModelAdmin, action

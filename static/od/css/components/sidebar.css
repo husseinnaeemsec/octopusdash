@@ -1,11 +1,13 @@
 /* Sidebar container */
 .sidebar {
-  @apply bg-base-100 border-r border-base-300 z-0 flex flex-col h-dvh;
+  @apply bg-base-100 border-r border-base-300 z-0 hidden lg:flex flex-col h-dvh overflow-x-visible;
 }
+
+
 
 /* Sidebar menu item */
 .sidebar-menu-item {
-  @apply p-3 flex items-center gap-2 rounded-md text-sm cursor-pointer 
+  @apply p-3 flex items-center gap-2 border border-base-content/30 rounded-md text-sm cursor-pointer 
          hover:bg-base-200 transition-colors;
 }
 
@@ -16,10 +18,10 @@
 
 /* Active state inside submenu */
 .submenu .sidebar-menu-item.active {
-  @apply bg-base-200 text-base-content;
+  @apply bg-base-300 text-base-content;
 }
 
 /* Submenu container */
 .submenu {
-  @apply ml-4 pl-2 border-l border-base-200 hidden;
+  @apply   border-l border-base-200 ;
 }

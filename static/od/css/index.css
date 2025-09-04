@@ -22,6 +22,8 @@ body.hide-sidebar .sidebar {
   left: -100%;
 }
 
+
+
 input[type=checkbox]{
   @apply checkbox-sm checkbox;
 }
