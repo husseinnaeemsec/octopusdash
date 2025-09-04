@@ -1,0 +1,4 @@
+{% load octopusdash_tags %}
+data-pk="{{ obj.pk }}"
+data-delete-url="{% admin_view_with_args admin 'delete' obj.pk request %}"
+data-update-url="{% admin_view_with_args admin 'update' obj.pk request %}"

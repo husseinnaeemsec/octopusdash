@@ -1,0 +1,14 @@
+.file-drop {
+    transition: background-color .15s ease, border-color .15s ease, transform .06s ease;
+}
+
+.file-drop.dragover {
+    transform: translateY(-1px);
+    outline: 2px dashed;
+    outline-offset: -8px;
+}
+
+.file-list li:not(:last-child) {
+    border-bottom: 1px dashed ;
+    @apply border-secondary;
+}

@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@import './components/sidebar.css';
+@import './components/ui/radio_option_card.css';
+@import './components/inputs/fileinput.css';
+@source "../../../../*.{html,js}";
+@plugin "daisyui" {
+  themes:all;
+} ;
+
+
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+body.hide-sidebar{
+  transition: grid-template-column .2s;
+  @apply grid-cols-1;
+}
+
+body.hide-sidebar .sidebar {
+  position: fixed;
+  left: -100%;
+}
+
+input[type=checkbox]{
+  @apply checkbox-sm checkbox;
+}
+
+
+.alert-error {
+  @apply bg-error/5 text-error p-3;
+}

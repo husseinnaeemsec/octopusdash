@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'od/css/dist/dashboard.min.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'od/js/context_menu.js' %}"></script>
+    <script src="{% static 'od/js/toast.js' %}"></script>
+    <script src="{% static 'od/js/search_menu.js' %}"></script>
+    <script src="https://kit.fontawesome.com/fc06c118cb.js" crossorigin="anonymous"></script>
+    <script src="{% static 'od/js/vendors/jquery.3.7.1.js' %}"></script>
+    {% block extrahead %} 
+    <!-- Extra header -->
+    {% endblock extrahead %}
+    <title> Octopusdash V2 </title>
+</head>
+
+<body class=" grid lg:grid-cols-[280px_1fr] gap-0 ">
+    {% include "od/partials/sidebar.html" %}
+    <div class="max-h-dvh overflow-y-auto overflow-x-hidden">
+        {% include 'od/partials/navbar.html' %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

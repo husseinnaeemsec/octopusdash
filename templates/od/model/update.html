@@ -1,0 +1,47 @@
+{% extends 'od/base.html' %}
+
+{% block content %}
+<main class="lg:p-10 p-5 max-w-7xl mx-auto">
+    {% if form.errors %}
+    <div class="p-5 rounded-md alert alert-error mb-5  flex flex-col items-start justify-start  gap-1 border border-rose-600  space-y-2">
+        <p class="  text-xl font-semibold"> Please check the fields bellow </p>
+        <ul class="px-4 space-y-2">
+            {% for error in form.errors %}
+                    <li class="list-disc"> {{error}} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data" class="p-5   rounded-md">
+        {% if object %}
+        <h1 class="text-2xl mb-5"> Update <strong> {{object}} </strong> </h1>
+        {% else %}
+        <h1 class="text-2xl mb-5 capitalize"> Create New <strong> {{admin.opts.verbose_name}} </strong> </h1>
+        {% endif %}
+        {% for msg in messages %}
+        {{msg}}
+        {% endfor %}
+        <div class="space-y-3">
+            {% for field in form %}
+            <div class="space-y-2">
+                <p class=""> {{field.label}} </p>
+                {% if field.help_text %}
+                <p class="text-sm"> {{field.help_text|safe}} </p>
+                {% endif %}
+                {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="p-4 rounded-md alert alert-error  space-y-2">
+                        <li class="list-none"> {{error}} </li>
+                    </div>
+                {% endfor %}
+                {% endif %}
+                {{field}}
+            </div>
+            {% endfor %}
+        </div>
+        {% csrf_token %}
+
+        <button class="mt-2 btn-primary btn"> Save </button>
+    </form>
+</main>
+{% endblock %}

@@ -1,0 +1,96 @@
+<form method="get" action="{{request.path}}">
+    <button type="button"  class="filters-btn btn ">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="size-4">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+        </svg>
+        Filters
+    </button>
+    <div id="filters-popup" class="fixed inset-0 w-full hidden  h-full bg-black/30  z-[100]  ">
+        <div class="flex items-center w-full h-full">
+            <div
+                class="absolute bg-base-100 flex flex-col justify-between h-[95%] w-full right-10 rounded-2xl shadow-md max-w-[500px] ">
+                <!-- Filters popup header -->
+                <div
+                    class="flex sticky top-0 z-0 items-center pb-3 p-4    justify-between">
+                    <span></span>
+                    <h1 class="text-lg font-bold"> Filters </h1>
+                    <button type="button" class="filters-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6 ">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+
+                    </button>
+                </div>
+                <!-- Filters popup content -->
+                <div class="p-3 flex-1 max-h-full space-y-2 overflow-y-auto">
+                    {% for field,filter_data in admin.get_filter_fields.items %}
+                    <div class=" bg-base-300 rounded-md ">
+                        <button type="button" data-menu="#filters-menu-{{field}}"
+                            class="flex  filter-btn items-center h w-full p-3 justify-between">
+                            {{filter_data.readable}}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </button>
+                        <!-- Filters menu -->
+                        <ul id="filters-menu-{{field}}" class="p-3 bg-base-100 border-x border-b border-base-300 hidden space-y-3 text-sm">
+                            {% for lookup in filter_data.lookup %}
+                            <div
+                                class="">
+                                {% if filter_data.input_type != 'text' or filter_data.input_type == 'checkbox' %}
+                                <p> {{lookup.label}} </p>
+                                {% endif %}
+                                <input placeholder="{{lookup.label}}" name="{{lookup.lookup_name}}"
+                                    class="{{filter_data.input_type}}"
+                                    type="{{filter_data.input_type}}">
+                            </div>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% empty %}
+                    <div class="w-full p-4 text-center   rounded-xl ">
+                        <p class=" text-sm">
+                            No filter fields have been added yet.
+                        </p>
+                        <p class="mt-2  text-sm">
+                            Follow the
+                            <a href="https://github.com/husseinnaeemsec/octopusdash"
+                                class="text-indigo-600 underline font-medium hover:text-indigo-700 transition">
+                                documentation
+                            </a>
+                            to learn how to configure filter fields.
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Filters popup footer -->
+                <div
+                    class="sticky flex -t   items-center justify-between bottom-0 z-0 p-4">
+                    <button type="reset"
+                        class="    p-2 rounded-md px-4">
+                        Reset </button>
+                    <button type="submit" class="p-2 rounded-md px-4 bg-indigo-600 text-white hover:bg-indigo-700 ">
+                        Filter
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<script>
+    $(".filter-btn").click((e) => {
+        e.preventDefault();
+        $($(e.currentTarget).data("menu")).slideToggle(200)
+    })
+    // Show filters popup 
+    $(".filters-btn").click((e)=>{
+        $("#filters-popup").fadeToggle()
+    })
+</script>

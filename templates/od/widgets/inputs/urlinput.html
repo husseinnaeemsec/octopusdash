@@ -1,0 +1,13 @@
+<label class="input {% if widget.attrs.validate %} validator {% endif %}">
+  {{widget.attrs.icon|safe}}
+  <input
+    type="url"
+    placeholder="{{widget.attrs.label|default:widget.name}}"
+    {% if widget.required %}required{% endif %}
+    {% if widget.value %}value="{{widget.value}}"{% endif %}
+    {% include 'od/widgets/default_attrs.html' %}
+  />
+</label>
+{% if widget.attrs.hint and widget.attrs.validate %}
+<p class="validator-hint">{{ widget.attrs.hint }}</p>
+{% endif %}

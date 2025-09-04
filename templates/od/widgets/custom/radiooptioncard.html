@@ -1,0 +1,19 @@
+<div class="max-w-3xl w-full grid lg:grid-cols-3 gap-5">
+    {% for group,options,index in widget.optgroups %}
+    {% for option in options %}
+    {% if option.value %}
+    <div class="radio-option-card">
+        {% if option.option_attrs %}
+        <h3 class="title"> {{option.option_attrs.label}} </h3>
+        <p class="help-text"> {{option.option_attrs.help_text}} </p>
+        {% else %}
+        <h3 class="title"> {{option.label}} </h3>
+        <p class="help-text"> {{option.help_text}} </p>
+        {% endif %}
+        <input type="radio" {% if option.checked %} checked {% elif option.checked %} checked {% endif %}
+            value="{{option.value}}" name="{{widget.name}}" id="">
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+</div>

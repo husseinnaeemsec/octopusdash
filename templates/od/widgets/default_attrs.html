@@ -1,0 +1,5 @@
+{% for attr, value in widget.attrs.items %}
+    {% if value is not none %}
+        {{ attr }}="{{ value }}"
+    {% endif %}
+{% endfor %}

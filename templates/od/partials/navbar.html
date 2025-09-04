@@ -1,0 +1,21 @@
+<nav class="w-full flex items-center   px-5 p-3 h-16 bg-base-100 border-b border-base-300  sticky top-0 z-[1] justify-between min-h-16   ">
+    <button id="toggle-sidebar" class="size-8   rounded-md flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+        </svg>
+    </button>
+    <h1 class="text-xl"> Site title </h1>
+    <div>
+        <button type="button" id="mode" class="rounded-full px-2 p-1 text-sm"></button>
+    </div>
+</nav>
+
+<script>
+    document.getElementById("toggle-sidebar").addEventListener("click", () => {
+        document.body.classList.toggle("hide-sidebar")
+    })
+    document.getElementById("mode").addEventListener("click",()=>{
+        document.documentElement.classList.toggle("dark")
+    })
+</script>

@@ -1,0 +1,18 @@
+{% extends 'od/base.html' %}
+{% block content %}
+{{ form.media }}
+<form class="max-w-3xl mx-auto pt-20 space-y-3">
+    <p class="text-2xl"> Octopusdash custom widget </p>
+    <div class="flex flex-col space-y-2">
+        <p class="label"> Char Field </p>
+        <p> Custom char field with options displayed as a <strong> radio card option </strong> </p>
+        {{form.char_field}}
+    </div>
+    <div class="flex flex-col space-y-2">
+        <p class="label"> File Field </p>
+        <p> Simple Drag-Drop <strong> file input widget </strong> </p>
+        {{form.file_field}}
+    </div>
+
+</form>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% load static %}
+{% load octopusdash_tags %}
+<input type="hidden" value="{{admin.get_table_header|length|add:2}}" name="__colspan__" >
+{% if admin.get_list_editable %}
+<form method="post" action="{{request.path}}" >
+{% endif %}
+<div class="  rounded-xl border border-base-content/50  shadow-lg p-4">
+  <div class="flex items-center gap-x-2 justify-between p-3 px-0">
+    {% include 'od/actions.html' %}
+    {% include 'od/filters.html' %}
+  </div>
+  <div class="flex items-center   justify-between mb-4">
+    <div class="text-sm ">
+      <span id="selected-count">0</span> selected
+    </div>
+  </div>
+  <div id="objects-form">
+    <div class="overflow-x-auto max-h-[65dvh] overflow-y-auto ">
+      <table class="table">
+        <thead class="bg-base-200 sticky top-0 z-[1]">
+          <tr>
+            <th class="">
+              <label class="sr-only" for="select-all">Select all</label>
+              <input id="select-all" type="checkbox" />
+            </th>
+
+            {# Render table headers dynamically #}
+            {% for field in admin.get_table_header %}
+            <th>
+              {% if field == '__str__' %}
+              objects
+              {% else %}
+              {{ field|readable}}
+              {% endif %}
+            </th>
+            {% endfor %}
+            <th> Actions </th>
+            {% if admin.get_list_editable %}
+            <th class="text-center sticky right-0 z-[1] bg-base-200">
+              save
+            </th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody id="objects-tbody">
+          {% if admin.get_list_editable %}
+          {% include 'od/model/content/objects_formset_loop.html' with formset=formset %}
+          {% else %}
+          {% include 'od/model/content/objects_loop.html' with page_obj=page_obj %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Hidden container that will be populated with selected ids for submission -->
+    <div id="selected-inputs"></div>
+    {% include 'od/paginator.html' %}
+  </div>
+</div>
+{% if admin.get_list_editable %}
+</form>
+{% endif %}
+
+<!-- Minimal JS for select-all, indeterminate state, row highlighting and submission inputs -->
+<script>
+  const getLink = (href, text, icon) => {
+    let linkIcon;
+
+    switch (icon) {
+      case 'edit':
+        linkIcon = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+            </svg>`;
+        break;
+
+      case 'view':
+        linkIcon = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+            </svg>`;
+        break;
+
+      case 'delete':
+        linkIcon = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+            </svg>
+          `;
+        break;
+
+      default:
+        linkIcon = '';
+    }
+
+    return `<a href="${href}" class="w-full h-full flex items-center gap-2">${linkIcon} ${text}</a>`;
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('tr[data-pk]').forEach(tr => {
+      const pk = tr.dataset.pk;
+      const trigger = document.getElementById(`${pk}-context-menu-trigger`);
+
+      new ContextMenu({
+        container: tr, trigger, items: [
+          { label: getLink(tr.dataset.updateUrl, 'Edit', 'edit'), action: () => { } },
+          { label: getLink(tr.dataset.deleteUrl, 'Delete', 'delete'), action: () => {} },
+        ]
+      });
+    });
+  });
+</script>

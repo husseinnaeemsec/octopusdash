@@ -1,0 +1,19 @@
+.radio-option-card{
+    @apply p-3 flex flex-col z-[1] relative border rounded-md border-base-content/50;
+}
+
+.radio-option-card:has(input[type=radio]:checked){
+    @apply border-transparent outline-[3px] outline-primary;
+}
+
+.radio-option-card input[type=radio]{
+    @apply absolute inset-0 w-full h-full z-10 appearance-none;
+}
+
+.radio-option-card .title{
+    @apply text-xl;
+}
+.radio-option-card .help-text{
+    @apply text-base-content/70 text-sm;
+}
+

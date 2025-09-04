@@ -1,0 +1,27 @@
+{% load octopusdash_tags %}
+{% for obj in page_obj %}
+<tr  {% include 'od/model/content/object_attrs.html' with obj=obj %} >
+
+    {% include 'od/model/content/checkbox_td.html' with obj=obj %}
+
+    {# ✅ For each field in list_display, show the value using getattr filter #}
+    {% for field in admin.get_list_display %}
+    <td
+        class="px-4 py-3 text-xs {% if field in admin.get_list_editable %}  {% endif %} lg:text-sm ">
+        {{ obj|getattr:field }}
+    </td>
+    {% endfor %}
+    <td>
+        <button id="{{obj.id}}-context-menu-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-4">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+            </svg>
+        </button>
+    </td>
+</tr>
+
+{% empty %}
+{% include 'od/model/content/empty.html' %}
+{% endfor %}

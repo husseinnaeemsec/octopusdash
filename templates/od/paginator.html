@@ -1,0 +1,49 @@
+<div class="mt-4 flex items-center  pt-3   justify-between">
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav class="join">
+        <!-- Previous Page -->
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"
+               class="join-item btn">
+               &laquo;
+            </a>
+        {% else %}
+            <span class="join-item btn  btn-disabled">&laquo;</span>
+        {% endif %}
+
+        <!-- Page Numbers -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="join-item btn btn-disabled">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}" 
+                   class="join-item btn">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next Page -->
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+               class="join-item btn">
+               &raquo;
+            </a>
+        {% else %}
+            <span class="btn btn-disabled">&raquo;</span>
+        {% endif %}
+    </nav>
+    {% else %}
+        <nav class="join">
+            Page 1 of 1
+        </nav>
+    {% endif %}
+        <div class="select">
+            <span class="label"> Page size </span>
+            <select name="page_size" id="" >
+                <option value="20">20</option>
+                <option value="40">40</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+</div>

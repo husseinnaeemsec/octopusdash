@@ -1,0 +1,36 @@
+{% extends 'od/base.html' %}
+{% load static %}
+{% load octopusdash_tags %}
+{% if admin.get_list_editable %}
+{% block extrahead %}
+{{block.super}}
+<script src="{% static 'od/js/inline_form.js' %}"></script>
+{% endblock  %}
+{% endif %}
+
+{% block content %}
+<main class="lg:p-10 p-5 space-y-10">
+    <section class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold capitalize"> {{admin.opts.verbose_name_plural}} List </h1>
+            <p class=" text-sm"> Here you can find all your {{admin.opts.verbose_name_plural}}. </p>
+        </div>
+
+        <div class="flex items-center gap-3 ">
+            <!-- <input id="searchInput" placeholder="Search for {{admin.opts.verbose_name_plural}}" type="text"
+                class="p-2   shadow rounded-md flex-1"> -->
+            <a href="{{admin.create_url}}" class="btn btn-primary"> Add new
+                {{admin.opts.verbose_name}} </a>
+        </div>
+    </section>
+    {% include 'od/content/messages.html' %}
+    {% include 'od/model/content/object_list.html' %}
+</main>
+
+<!-- <script>
+    const searchInput = document.getElementById("searchInput");
+    new SearchMenu(searchInput);
+</script> -->
+
+
+{% endblock content %}

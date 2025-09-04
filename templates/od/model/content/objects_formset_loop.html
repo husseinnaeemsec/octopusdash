@@ -1,0 +1,44 @@
+{% load octopusdash_tags %}
+{% csrf_token %}
+{% for form in formset %}
+<tr id="inline_form_{{form.instance.pk}}" {% include 'od/model/content/object_attrs.html' with obj=form.instance %}  >
+    {% include 'od/model/content/checkbox_td.html' with obj=form.instance %}
+    {% for field_name in admin.get_table_header %}
+    {% with field=form|get_formvalue:field_name %}
+        <td class="max-w-xs overflow-hidden whitespace-nowrap text-ellipsis">
+            {% if field_name in admin.get_list_editable %}
+                {% include 'od/model/content/formset_form_field.html' %}
+            {% else %}
+                {{ form.instance|getattr:field_name }}
+            {% endif %}
+        </td>
+    {% endwith %}
+    {% endfor %}
+
+    <td>
+        <button id="{{ form.instance.pk }}-context-menu-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-4">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+            </svg>
+        </button>
+    </td>
+    <td class="sticky right-0  z-0 bg-base-100 ">
+       <div class="flex items-center justify-center w-full">
+         <button   data-inline-form="inline_form_{{form.instance.pk}}" id="save_inline_form_btn_{{form.instance.pk}}"
+            class="btn mx-auto w-fit btn-primary btn-sm"> Save </button>
+       </div>
+    </td>
+
+</tr>
+
+<script>
+    document.addEventListener("DOMContentLoaded", (e) => {
+        new InlineForm("save_inline_form_btn_{{form.instance.pk}}","{{form.instance.pk}}")
+    })
+</script>
+
+{% empty %}
+{% include 'od/model/content/empty.html' %}
+{% endfor %}

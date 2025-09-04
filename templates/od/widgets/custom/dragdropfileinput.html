@@ -1,0 +1,68 @@
+<section class="max-w-xl">
+    <div id="{{ widget.attrs.id }}_dropzone"
+        class="file-drop rounded-2xl bg-base-300/50 hover:bg-base-300 border border-dashed border-base-300 
+               focus:bg-base-200/70 cursor-pointer p-6 text-center outline-none"
+        tabindex="0"
+        role="button"
+        aria-label="Upload files: drag and drop or choose">
+        <!-- hidden file input -->
+        <input 
+            type="{{ widget.type|default:'file' }}"
+            name="{{ widget.name }}"
+            id="{{ widget.attrs.id }}"
+            {% if widget.value != None %}value="{{ widget.value|stringformat:'s' }}"{% endif %}
+            {% include "django/forms/widgets/attrs.html" %}
+        />
+
+        <!-- content -->
+        <div class="flex flex-col items-center gap-3 pointer-events-none">
+            <!-- icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-10 opacity-70" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M3 15.75V18a3 3 0 003 3h12a3 3 0 003-3v-2.25M16.5 9L12 4.5 7.5 9M12 4.5V15" />
+            </svg>
+
+            <div class="space-y-1">
+                <p class="text-base font-semibold">Drag & drop files here</p>
+                <p class="text-sm text-base-content/70">or</p>
+            </div>
+
+            <button type="button" class="btn  btn-sm" id="{{ widget.attrs.id }}_chooseBtn">
+                Choose files
+            </button>
+
+            <p class="text-xs text-base-content/60">
+                {% if widget.attrs.accept %}Allowed: {{ widget.attrs.accept }}{% else %}Any file{% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- selected files -->
+    <div id="{{ widget.attrs.id }}_selectedWrap" class="mt-4 hidden">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium">Selected files</span>
+            <button type="button" class="btn btn-ghost btn-xs" id="{{ widget.attrs.id }}_clearBtn">Clear</button>
+        </div>
+        <ul id="{{ widget.attrs.id }}_fileList"
+            class="file-list divide-y divide-dashed divide-base-300 rounded-xl bg-base-100 border border-base-300"></ul>
+    </div>
+
+    <!-- error toast -->
+    <div id="{{ widget.attrs.id }}_errorToast" class="toast toast-top toast-end hidden">
+        <div class="alert alert-error">
+            <span id="{{ widget.attrs.id }}_errorText"></span>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    new DragDropFileInput("#{{ widget.attrs.id }}_dropzone", {
+        inputName: "{{ widget.name }}",
+        multiple: {{ widget.attrs.multiple|default_if_none:"false"|yesno:"true,false" }},
+        accept: [{% if widget.attrs.accept %}"{{ widget.attrs.accept }}"{% endif %}],
+        onChange: (files) => console.log("Selected:", files),
+        onError: (msg) => alert(msg),
+    });
+</script>

@@ -1,0 +1,101 @@
+{% load static %}
+{% load octopusdash_tags %}
+<aside class="sidebar hidden lg:flex">
+    <!-- Sidebar Header -->
+    <div class="flex items-center gap-3 h-16 justify-between p-4 border-b border-base-300">
+        <div class="flex items-center gap-3">
+            <div class="flex size-9 items-center justify-center rounded-lg">
+                <img src="{% static 'od/logo/64.svg' %}" class="size-12" alt="">
+            </div>
+            <div class="flex flex-col">
+                <span class="font-semibold text-sm">OctopusDash</span>
+                <span class="text-xs text-base-content/60">Analytics Suite</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Content -->
+    <div class="flex flex-1 flex-col gap-6 overflow-auto p-2">
+        <!-- Apps -->
+        <div class="flex flex-col gap-2">
+            <div class="px-2 text-xs uppercase font-semibold text-base-content/50">
+                Apps
+            </div>
+            <ul class="flex flex-col gap-1">
+                {% for app_label, app_data in registry.items %}
+                <div>
+                    <li data-submenu="#app-models-{{app_label}}" 
+                        class="sidebar-menu-item {% if request.path|is_active_route:app_label %}active{% endif %}">
+                        <div class="flex w-full items-center justify-between">
+                            <a href="#" class="capitalize">{{ app_label }}</a>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                 stroke-width="1.5" stroke="currentColor" class="size-4 opacity-70">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
+                    </li>
+                    <ul id="app-models-{{app_label}}" class="submenu space-y-1 mt-1">
+                        {% for model_name, model_data in app_data.models.items %}
+                        <li class="sidebar-menu-item submenu-item {% if request.path == model_data.admin.list_url %}active{% endif %}">
+                            {% if model_data.admin.icon %} {{ model_data.admin.icon|safe }} {% endif %}
+                            <a href="{{ model_data.admin.list_url }}" class="capitalize">
+                                {{ model_data.admin.opts.verbose_name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Plugins -->
+        <div class="flex flex-col gap-2">
+            <div class="px-2 text-xs uppercase font-semibold text-base-content/50">
+                Plugins
+            </div>
+            <ul class="flex flex-col gap-1">
+                {% for plugin in plugins %}
+                <div>
+                    <li class="sidebar-menu-item">
+                        <div class="flex w-full items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                {{ plugin.icon|safe }}
+                                <a href="#">{{ plugin.name }}</a>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                 stroke-width="1.5" stroke="currentColor" class="size-4 opacity-70">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
+                    </li>
+                </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="p-3 flex items-center gap-3 border-t border-base-300">
+        <img src="" alt="User Avatar" class="h-8 w-8 rounded-full bg-base-200" />
+        <div class="flex flex-col text-sm">
+            <span class="font-medium">Hussein</span>
+            <button class="text-xs text-base-content/70 hover:text-primary transition-colors">
+                Logout
+            </button>
+        </div>
+    </div>
+</aside>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".sidebar-menu-item").forEach(item => {
+            item.addEventListener("click", (e) => {
+                const submenuId = e.currentTarget.dataset.submenu
+                if (submenuId) {
+                    $(submenuId).slideToggle(300);
+                }
+            });
+        });
+    });
+</script>

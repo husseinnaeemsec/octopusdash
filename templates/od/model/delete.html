@@ -1,0 +1,49 @@
+{% extends 'od/base.html' %}
+
+{% block content  %}
+{{form.errors}}
+<main class="lg:p-10 p-5 flex items-center justify-center w-full max-w-7xl mx-auto">
+    <div class="w-full p-6 rounded-md bg-base-100 border border-error space-y-6">
+        <!-- Header -->
+        <div>
+            <h1 class="text-xl font-semibold text-error">
+                You're about to delete  <strong class="capitalize">{{admin.opts.verbose_name}}({{ object }})</strong>
+            </h1>
+            <p class="text-sm text-error">This action cannot be undone.</p>
+        </div>
+
+        <!-- Related objects -->
+        {% if related_objects %}
+        <div class="p-4 rounded-md bg-base-200 border border-base-300">
+            <h2 class="text-lg font-medium text-error mb-3">
+                The following related objects will also be deleted:
+            </h2>
+            <ul class="list-disc list-inside space-y-2">
+                {% for model, objs in related_objects.items %}
+                    <li>
+                        <span class="font-semibold">{{ model }}</span>
+                        <ul class="list-circle list-inside ml-6 text-base-content">
+                            {% for obj in objs %}
+                                <li>{{ obj }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <form method="post" class="flex items-center gap-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-error">
+                Confirm Delete
+            </button>
+            <a href="javascript:history.back()" class="btn">
+                Cancel
+            </a>
+        </form>
+    </div>
+</main>
+
+{% endblock content %}
