@@ -1,18 +1,10 @@
-{% extends 'od/base.html' %}
+{% extends "od/base.html" %}
+{% load static %}
 {% block content %}
-{{ form.media }}
-<form class="max-w-3xl mx-auto pt-20 space-y-3">
-    <p class="text-2xl"> Octopusdash custom widget </p>
-    <div class="flex flex-col space-y-2">
-        <p class="label"> Char Field </p>
-        <p> Custom char field with options displayed as a <strong> radio card option </strong> </p>
-        {{form.char_field}}
-    </div>
-    <div class="flex flex-col space-y-2">
-        <p class="label"> File Field </p>
-        <p> Simple Drag-Drop <strong> file input widget </strong> </p>
-        {{form.file_field}}
-    </div>
-
-</form>
+<div class="flex flex-col items-center justify-center h-[80vh] text-center">
+  <img src="{% static 'od/logo/128.svg' %}" alt="OctopusDash Logo" class="w-24 h-24 mb-6">
+  <h1 class="text-3xl font-bold mb-2">Welcome to OctopusDash</h1>
+  <p class="text-lg text-slate-600">Your modern Django admin panel alternative.</p>
+</div>
 {% endblock %}
+

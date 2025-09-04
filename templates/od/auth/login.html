@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | OctopusDash</title>
+  <link rel="stylesheet" href="{% static 'od/css/dist/dashboard.min.css' %}">
+</head>
+<body class="flex items-center justify-center h-screen bg-base-100">
+
+  <div class="flex flex-col items-center gap-6 w-full px-4">
+    <form method="post" class="w-full max-w-md">
+      {% csrf_token %}
+      <fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-6 shadow-lg">
+        <legend class="fieldset-legend flex items-center gap-3 text-xl font-bold">
+          <img src="{% static 'od/logo/128.svg' %}" alt="OctopusDash Logo" class="w-10 h-10">
+          OctopusDash
+        </legend>
+
+        <!-- Title + Subtitle -->
+        <h2 class="text-2xl font-semibold mt-2">Welcome Back</h2>
+        <p class="text-sm text-base-400 mb-4">Sign in to access your dashboard</p>
+
+        <!-- Email -->
+        <label class="label">Username or Email</label>
+        <input type="text" name="username" class="input w-full" placeholder="Enter your username or email" required />
+
+
+        <!-- Password -->
+        <label class="label">Password</label>
+        <input type="password" name="password" class="input w-full" placeholder="Enter your password" required />
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-neutral mt-6 w-full">Login</button>
+      </fieldset>
+    </form>
+
+    <!-- Error Messages -->
+    {% if messages %}
+    <div class="w-full max-w-md">
+      {% for message in messages %}
+        <div class="alert alert-error text-sm mt-2">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+</body>
+</html>

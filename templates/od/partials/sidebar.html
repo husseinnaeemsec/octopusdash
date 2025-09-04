@@ -1,6 +1,6 @@
 {% load static %}
 {% load octopusdash_tags %}
-<aside class="sidebar hidden lg:flex">
+<aside class="sidebar">
     <!-- Sidebar Header -->
     <div class="flex items-center gap-3 h-16 justify-between p-4 border-b border-base-300">
         <div class="flex items-center gap-3">
@@ -15,31 +15,39 @@
     </div>
 
     <!-- Sidebar Content -->
-    <div class="flex flex-1 flex-col gap-6 overflow-auto p-2">
+    <div class="flex flex-1 flex-col gap-6 overflow-x-visible mt-5 p-2">
         <!-- Apps -->
         <div class="flex flex-col gap-2">
-            <div class="px-2 text-xs uppercase font-semibold text-base-content/50">
+            <div class="px-2 text-xs uppercase  text-base-content/50">
                 Apps
             </div>
+
+            {% if registry %}
             <ul class="flex flex-col gap-1">
                 {% for app_label, app_data in registry.items %}
                 <div>
-                    <li data-submenu="#app-models-{{app_label}}" 
+                    <li data-submenu="#app-models-{{app_label}}"
                         class="sidebar-menu-item {% if request.path|is_active_route:app_label %}active{% endif %}">
                         <div class="flex w-full items-center justify-between">
                             <a href="#" class="capitalize">{{ app_label }}</a>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-                                 stroke-width="1.5" stroke="currentColor" class="size-4 opacity-70">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-4 opacity-70">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
                     </li>
-                    <ul id="app-models-{{app_label}}" class="submenu space-y-1 mt-1">
+                    <ul id="app-models-{{app_label}}" class="submenu {% if not request.path|is_active_route:app_label %}hidden{% endif %} space-y-1 mt-1">
                         {% for model_name, model_data in app_data.models.items %}
-                        <li class="sidebar-menu-item submenu-item {% if request.path == model_data.admin.list_url %}active{% endif %}">
+                        <li
+                            class="sidebar-menu-item flex items-center justify-between submenu-item {% if request.path == model_data.admin.list_url %}active{% endif %}">
                             {% if model_data.admin.icon %} {{ model_data.admin.icon|safe }} {% endif %}
                             <a href="{{ model_data.admin.list_url }}" class="capitalize">
                                 {{ model_data.admin.opts.verbose_name }}
+                            </a>
+                            <a href="{{model_data.admin.create_url}}" class="tooltip" data-tip="Add New {{model_data.admin.opts.verbose_name.title}}" >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
                             </a>
                         </li>
                         {% endfor %}
@@ -47,11 +55,19 @@
                 </div>
                 {% endfor %}
             </ul>
+            {% else %}
+            <div class="p-3 text-sm text-base-content/60 bg-base-200 rounded-md mt-2">
+                No apps registered. To get started, register your models or visit
+                <a target="_blank" href="https://github.com/husseinnaeemsec/octopusdash" class="text-primary underline">OctopusDash
+                    GitHub repo</a>.
+            </div>
+            {% endif %}
         </div>
 
+        {% if plugins %}
         <!-- Plugins -->
         <div class="flex flex-col gap-2">
-            <div class="px-2 text-xs uppercase font-semibold text-base-content/50">
+            <div class="px-2 text-xs uppercase  text-base-content/50">
                 Plugins
             </div>
             <ul class="flex flex-col gap-1">
@@ -63,8 +79,8 @@
                                 {{ plugin.icon|safe }}
                                 <a href="#">{{ plugin.name }}</a>
                             </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-                                 stroke-width="1.5" stroke="currentColor" class="size-4 opacity-70">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-4 opacity-70">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
@@ -73,17 +89,20 @@
                 {% endfor %}
             </ul>
         </div>
+        {% endif %}
     </div>
 
     <!-- Sidebar Footer -->
     <div class="p-3 flex items-center gap-3 border-t border-base-300">
-        <img src="" alt="User Avatar" class="h-8 w-8 rounded-full bg-base-200" />
+        {% if request.user.is_authenticated %}
+        <img src="{% static 'od/default-avatar.png' %}" alt="U" class="h-8 w-8 flex items-center justify-center rounded-full bg-base-200" />
         <div class="flex flex-col text-sm">
-            <span class="font-medium">Hussein</span>
-            <button class="text-xs text-base-content/70 hover:text-primary transition-colors">
+            <span class="font-medium">{{ request.user.get_full_name|default:request.user.username }}</span>
+            <a href="{% url 'octopusdash-logout' %}" class="text-xs text-base-content/70 hover:text-primary transition-colors">
                 Logout
-            </button>
+            </a>
         </div>
+        {% endif %}
     </div>
 </aside>
 

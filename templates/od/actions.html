@@ -4,7 +4,7 @@
         <input type="hidden" name="__request__type" value="admin_action" >
         <!-- Actions -->
         <div class="flex">
-            <select name="action" id="" class="select flex-1">
+            <select required name="action" id="" class="select flex-1">
                 <option value="" selected> Select Action </option>
                 {% for action_name,action in admin.get_actions.items %}
                 <option value="{{action_name}}"> {{action.short_description}} </option>
