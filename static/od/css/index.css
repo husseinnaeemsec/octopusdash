@@ -28,7 +28,7 @@ input[type=checkbox]{
   @apply checkbox-sm checkbox;
 }
 
-
-.alert-error {
-  @apply bg-error/5 text-error p-3;
+.tab:has(input[type=radio]:checked) {
+  @apply bg-base-300;
 }
+

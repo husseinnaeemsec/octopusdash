@@ -36,7 +36,8 @@
                             </svg>
                         </div>
                     </li>
-                    <ul id="app-models-{{app_label}}" class="submenu {% if not request.path|is_active_route:app_label %}hidden{% endif %} space-y-1 mt-1">
+                    <ul id="app-models-{{app_label}}"
+                        class="submenu {% if not request.path|is_active_route:app_label %}hidden{% endif %} space-y-1 mt-1">
                         {% for model_name, model_data in app_data.models.items %}
                         <li
                             class="sidebar-menu-item flex items-center justify-between submenu-item {% if request.path == model_data.admin.list_url %}active{% endif %}">
@@ -44,8 +45,10 @@
                             <a href="{{ model_data.admin.list_url }}" class="capitalize">
                                 {{ model_data.admin.opts.verbose_name }}
                             </a>
-                            <a href="{{model_data.admin.create_url}}" class="tooltip" data-tip="Add New {{model_data.admin.opts.verbose_name.title}}" >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-4">
+                            <a href="{{model_data.admin.create_url}}" class="tooltip"
+                                data-tip="Add New {{model_data.admin.opts.verbose_name.title}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                                    stroke="currentColor" class="size-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                             </a>
@@ -58,19 +61,31 @@
             {% else %}
             <div class="p-3 text-sm text-base-content/60 bg-base-200 rounded-md mt-2">
                 No apps registered. To get started, register your models or visit
-                <a target="_blank" href="https://github.com/husseinnaeemsec/octopusdash" class="text-primary underline">OctopusDash
+                <a target="_blank" href="https://github.com/husseinnaeemsec/octopusdash"
+                    class="text-primary underline">OctopusDash
                     GitHub repo</a>.
             </div>
             {% endif %}
         </div>
 
-        {% if plugins %}
         <!-- Plugins -->
         <div class="flex flex-col gap-2">
             <div class="px-2 text-xs uppercase  text-base-content/50">
                 Plugins
             </div>
+
             <ul class="flex flex-col gap-1">
+                {% url 'octopusdash-plugins' as plugins_url %}
+                <li class="sidebar-menu-item {% if request.path == plugins_url  %} active {% elif request.path|startswith:plugins_url %} active {% endif %}">
+                    <a href="{{plugins_url}}" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                        </svg>
+                        Plugins
+                    </a>
+                </li>
                 {% for plugin in plugins %}
                 <div>
                     <li class="sidebar-menu-item">
@@ -89,16 +104,17 @@
                 {% endfor %}
             </ul>
         </div>
-        {% endif %}
     </div>
 
     <!-- Sidebar Footer -->
     <div class="p-3 flex items-center gap-3 border-t border-base-300">
         {% if request.user.is_authenticated %}
-        <img src="{% static 'od/default-avatar.png' %}" alt="U" class="h-8 w-8 flex items-center justify-center rounded-full bg-base-200" />
+        <img src="{% static 'od/default-avatar.png' %}" alt="U"
+            class="h-8 w-8 flex items-center justify-center rounded-full bg-base-200" />
         <div class="flex flex-col text-sm">
             <span class="font-medium">{{ request.user.get_full_name|default:request.user.username }}</span>
-            <a href="{% url 'octopusdash-logout' %}" class="text-xs text-base-content/70 hover:text-primary transition-colors">
+            <a href="{% url 'octopusdash-logout' %}"
+                class="text-xs text-base-content/70 hover:text-primary transition-colors">
                 Logout
             </a>
         </div>

@@ -24,7 +24,7 @@ class ContextMenu {
     createMenu() {
         this.menu = document.createElement("div");
         this.menu.className = `
-            absolute z-50 hidden w-48  bg-base-100  rounded-md shadow-lg 
+            absolute z-50 hidden w-48  bg-base-100 border border-base-content rounded-md shadow-lg 
             overflow-hidden divide-y divide-gray-100 
         `;
         document.body.appendChild(this.menu);

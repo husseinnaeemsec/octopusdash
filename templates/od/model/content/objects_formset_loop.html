@@ -1,7 +1,7 @@
 {% load octopusdash_tags %}
 {% csrf_token %}
 {% for form in formset %}
-<tr id="inline_form_{{form.instance.pk}}" {% include 'od/model/content/object_attrs.html' with obj=form.instance %}  >
+<tr  id="inline_form_{{form.instance.pk}}" {% include 'od/model/content/object_attrs.html' with obj=form.instance %}  >
     {% include 'od/model/content/checkbox_td.html' with obj=form.instance %}
     {% for field_name in admin.get_table_header %}
     {% with field=form|get_formvalue:field_name %}

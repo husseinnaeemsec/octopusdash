@@ -4,7 +4,7 @@ from . import views
 from ._exceptions import *
 from django.urls import path,reverse_lazy
 from .forms import DynamicModelForm
-from ._admin_utils import FieldFalidationMixin,FormsetMixin
+from ._admin_utils import FieldFalidationAndSearchMixin,FormsetMixin,BaseModelAdmin
 from django.db.models import BooleanField,TimeField,DateField,DateTimeField,CharField,TextField
 from functools import wraps
 
@@ -36,72 +36,8 @@ def action(short_description: str):
 
 
 
-class ModelAdmin(FieldFalidationMixin,FormsetMixin):
-    # Widgt
-    widgets = {}
-    # Model
-    model:models.Model|None = None 
-    queryset = None
-    # Fields
-    search_fields:list = []
-    readonly_fields:list = []
-    list_display:list = []
-    list_editable:list = []
-    form_fields = []
-    exclude = []
-    ordering = ['id']
-    # Forms
-    form_class = None
-    formset_class = None
-    
-    # Views
-    list_view = None
-    update_view = None
-    delete_view = None
-    create_view = None
-    # Config
-    icon:str|None = None
-    # Actions
-    actions = {}
+class ModelAdmin(BaseModelAdmin,FieldFalidationAndSearchMixin,FormsetMixin):
 
-    # Filters
-    auto_load_filters = True
-    filter_fileds = []
-
-    
-    def __init__(self,model:models.Model):
-        self.model = model
-        self.opts = model._meta
-        self.actions = {}
-        self.queryset = self.queryset or self.model.objects.all().order_by(*self.ordering)
-        self._handle_custom_actions()
-        self._validate_fields()
-
-    def get_action(self,action):
-        return self.actions.get(action,{}).get("action",None) 
-    
-    def each_context(self):
-        
-        return {
-            'admin':self
-        }
-
-    def _handle_custom_actions(self):
-        for attr_name in dir(self):
-            attr = getattr(self, attr_name)
-            if callable(attr) and getattr(attr, "is_admin_action", False):
-                self.actions[attr_name] = {
-                    'short_description':attr.short_description,
-                    'action':attr
-                }
-
-    def get_actions(self):
-        """Return the registered actions."""
-        return self.actions
-    
-    def get_queryset(self):
-        
-        return 
     
     def get_list_view(self):
         annotations = {}
@@ -186,6 +122,7 @@ class ModelAdmin(FieldFalidationMixin,FormsetMixin):
     def urls(self):
         return self.get_urls()
     
+
 
 
     def get_table_header(self) -> list[str]:

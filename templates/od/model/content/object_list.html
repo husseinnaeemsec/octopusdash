@@ -1,36 +1,43 @@
 {% load static %}
 {% load octopusdash_tags %}
 <input type="hidden" value="{{admin.get_table_header|length|add:2}}" name="__colspan__" >
-{% if admin.get_list_editable %}
-<form method="post" action="{{request.path}}" >
-{% endif %}
 <div class="  rounded-xl border border-base-content/50  shadow-lg p-4">
-  <div class="flex items-center gap-x-2 justify-between p-3 px-0">
+  <div class="flex items-center gap-x-2 w-full justify-between p-3 px-0">
     {% include 'od/actions.html' %}
-    {% include 'od/filters.html' %}
+    {% include 'od/search.html' %}
+    <div class="flex items-center center  shrink-0 gap-x-2">
+      {% include 'od/filters.html' %}
+      {% include 'od/ordering.html' %}
+    </div>
   </div>
-  <div class="flex items-center   justify-between mb-4">
+  <div class="flex items-center  justify-between mb-4">
     <div class="text-sm ">
       <span id="selected-count">0</span> selected
     </div>
+    <div></div>
+
   </div>
   <div id="objects-form">
     <div class="overflow-x-auto max-h-[65dvh] overflow-y-auto ">
-      <table class="table">
-        <thead class="bg-base-200 sticky top-0 z-[1]">
+      <table class="table ">
+        <thead class="bg-base-200 sticky top-0 z-[2]">
           <tr>
-            <th class="">
+            <th class="sticky left-0 z-[1] bg-base-200">
               <label class="sr-only" for="select-all">Select all</label>
               <input id="select-all" type="checkbox" />
             </th>
-
             {# Render table headers dynamically #}
             {% for field in admin.get_table_header %}
             <th>
               {% if field == '__str__' %}
               objects
               {% else %}
+              <div title="" class="flex items-center cursor-pointer justify-between gap-x-2">
               {{ field|readable}}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+              </svg>
+              </div>
               {% endif %}
             </th>
             {% endfor %}
@@ -57,9 +64,7 @@
     {% include 'od/paginator.html' %}
   </div>
 </div>
-{% if admin.get_list_editable %}
-</form>
-{% endif %}
+
 
 <!-- Minimal JS for select-all, indeterminate state, row highlighting and submission inputs -->
 <script>

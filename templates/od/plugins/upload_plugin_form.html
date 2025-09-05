@@ -1,0 +1,48 @@
+<form method="post" enctype="multipart/form-data"
+    class="w-full mx-auto mt-6 p-6 bg-base-100 border border-base-content rounded-md flex flex-col items-center justify-center"
+    id="plugin-upload-form">
+    {% csrf_token %}
+
+    <!-- Drag & Drop area -->
+    <label for="plugin_file"
+        class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-base-300 rounded-lg cursor-pointer hover:border-base-content transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-base-content/50 mb-2" fill="none"
+            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M12 12v8m0-8l-3 3m3-3l3 3" />
+        </svg>
+        <span class="text-sm text-base-content/70">Drag & drop a plugin file here or click to browse</span>
+        <span class="text-xs text-base-content/50 mt-1">(Max size: 200MB, .py or .zip)</span>
+    </label>
+
+    <input type="file" id="plugin_file" name="plugin_file" accept=".py,.zip" class="hidden" required>
+
+    <button type="submit" class="btn  mt-4 w-full">Upload Plugin</button>
+</form>
+<script>
+    const pluginDropArea = document.getElementById('plugin-upload-form');
+    const pluginFileInput = document.getElementById('plugin_file');
+    // Highlight drag area
+    ['dragenter', 'dragover'].forEach(eventName => {
+        pluginDropArea.addEventListener(eventName, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            pluginDropArea.classList.add('border-indigo-500', 'bg-base-200');
+        }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        pluginDropArea.addEventListener(eventName, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            pluginDropArea.classList.remove('border-indigo-500', 'bg-base-200');
+        }, false);
+    });
+
+    // Handle dropped files
+    pluginDropArea.addEventListener('drop', e => {
+        if (e.dataTransfer.files.length) {
+            pluginFileInput.files = e.dataTransfer.files;
+        }
+    });
+</script>

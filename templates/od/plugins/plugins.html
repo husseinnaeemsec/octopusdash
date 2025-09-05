@@ -1,0 +1,170 @@
+{% extends "od/base.html" %}
+{% load static %}
+
+{% block title %} Plugins | {{block.super}} {% endblock title %}
+    
+
+{% block content %}
+<main>
+    <!-- Hero Section -->
+    <section class="hero  bg-base-200 p-6">
+        <div class="hero-content max-w-xl flex text-center flex-col items-center justify-center">
+            <h1 class="text-5xl font-bold ">OctopusDash Plugins</h1>
+            <p class="text-lg text-base-content/70">Find plugins for apps, models, and more to extend your
+                OctopusDash experience.</p>
+            <div class="w-full">
+                <input type="text" placeholder="Search plugins..." class="input input-bordered input-lg w-full" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs Section -->
+    <!-- name of each tab group should be unique -->
+    <div class="max-w-7xl w-full mx-auto mt-10">
+        <div class="mb-10">
+            {% include 'od/content/messages.html' %}
+        </div>
+        <div class="tabs tabs-lift flex flex-wrap">
+
+            <!-- All -->
+            <label class="tab flex items-center gap-2">
+                <input type="radio" name="my_tabs_4" checked />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+
+                All
+            </label>
+            <div class="tab-content bg-base-100 border border-base-content/50 p-6">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {% for plugin,plugin_info in loaded_plugins.items %}
+                    <div class="card border border-base-content shadow-md rounded-lg p-4 flex flex-col justify-between">
+                        <!-- Plugin Info -->
+                        <div>
+                            <img src="{% static plugin_info.icon %}" alt="" class="size-10">
+                            <h3 class="font-bold text-lg mb-2">{{ plugin_info.name }}</h3>
+                            <p class="text-sm text-base-content/70 mb-2">{{ plugin_info.description }}</p>
+                            <span class="text-xs text-base-content/50">Version: {{ plugin_info.version }}</span>
+                        </div>
+
+                        <!-- Manage Button -->
+                        <div class="mt-4 flex items-center gap-2">
+                            <a href="#" class="btn flex-1 bg-base-100 w-full">
+                                Manage
+                            </a>
+                            <form method="post" action="" class="h-full">
+                                <input type="hidden" value="delete_plugin" name="__request__type">
+                                <input type="hidden" value="{{plugin}}" name="plugin">
+                                {% csrf_token %}
+                                <button class="btn btn-error btn-sm h-full ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-base-content/50 col-span-full">
+                        No plugins found. Add plugins to the <code>plugins</code> folder.
+                    </p>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+
+            <!-- App -->
+            <label class="tab flex items-center gap-2">
+                <input type="radio" name="my_tabs_4"  />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                </svg>
+
+                App
+            </label>
+            <div class="tab-content bg-base-100 border border-base-content/50 p-6">App content</div>
+
+            <!-- Model -->
+            <label class="tab flex items-center gap-2">
+                <input type="radio" name="my_tabs_4" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                </svg>
+                Model
+            </label>
+            <div class="tab-content bg-base-100 border border-base-content/50 p-6">Model content</div>
+
+            <!-- Analysis -->
+            <label class="tab flex items-center gap-2">
+                <input type="radio" name="my_tabs_4" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                </svg>
+
+                Analysis
+            </label>
+            <div class="tab-content bg-base-100 border border-base-content/50 p-6">Analysis content</div>
+
+
+            <!-- Data Export -->
+            <label class="tab flex items-center gap-2">
+                <input type="radio" name="my_tabs_4" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
+
+                Data Export
+            </label>
+            <div class="tab-content bg-base-100 border border-base-content/50 p-6">Data Export content</div>
+
+            <!-- Others -->
+            <label class="tab flex items-center gap-2">
+                <input type="radio" name="my_tabs_4" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5" />
+                </svg>
+
+                Others
+            </label>
+            <div class="tab-content bg-base-100 border border-base-content/50 p-6">Others content</div>
+            <!-- Upload custom plugin -->
+            <label class="tab flex items-center gap-2 ">
+                <input type="radio" name="my_tabs_4" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4 text-base-content">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 10.5v6m3-3H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+                </svg>
+
+
+                <span class="text-base-content"> Upload plugin </span>
+            </label>
+            <div class="tab-content bg-base-100 border border-base-content/50 p-6">
+                
+                {% if settings.ALLOW_UPLOADING_PLUGINS %}
+                    {% include 'od/plugins/upload_plugin_form.html' %}
+                    {% else %}
+                    {% include 'od/plugins/plugin_upload_not_allowed.html' %}
+                {% endif %}
+                    
+            </div>
+
+        </div>
+    </div>
+</main>
+
+{% endblock %}

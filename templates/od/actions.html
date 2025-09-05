@@ -1,7 +1,8 @@
 {% load octopusdash_tags %}
-<div  class="space-y-1 flex-1">
+<form action="{{request.path}}" method="post" id="actions_form" class="space-y-1 shrink-0">
+    {% csrf_token %}
     <div class="flex  items-center flex-1 gap-4   ">
-        <input type="hidden" name="__request__type" value="admin_action" >
+        <input type="hidden" name="__request__type" value="admin_action">
         <!-- Actions -->
         <div class="flex">
             <select required name="action" id="" class="select flex-1">
@@ -11,20 +12,47 @@
                 {% endfor %}
             </select>
         </div>
-        <button type="submit" id="apply-actions"
-            class="inline-flex items-center gap-2 rounded-md bg-neutral px-4 py-2 text-sm font-medium text-white shadow-sm">
-            Take action on selected
+        <button type="submit" id="apply-actions" class="btn">
+            Apply
         </button>
         {% if not admin.get_actions %}
-        <a href="https://github.com/husseinnaeemsec/octopusdash/docs/custom-actions.md" data-tip="Read the docs to learn how to add custom actions." class="tooltip tooltip-accent">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+        <a href="https://github.com/husseinnaeemsec/octopusdash/docs/custom-actions.md"
+            data-tip="Read the docs to learn how to add custom actions." class="tooltip tooltip-accent">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
             </svg>
         </a>
         {% endif %}
     </div>
-</div>
+</form>
 
 <script>
 
+    const actionsForm = document.getElementById("actions_form")
+    actionsForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const form = e.currentTarget;
+        const selected = Array.from(
+            document.querySelectorAll("[name=__selected__]:checked")
+        );
+
+        // remove old hidden inputs (to avoid duplicates if re-submitting)
+        form.querySelectorAll("input[name='__selected__'][type='hidden']")
+            .forEach(el => el.remove());
+
+        // add hidden inputs for selected values
+        selected.forEach(input => {
+            const hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = "__selected__";
+            hidden.value = input.value;
+            form.appendChild(hidden);
+        });
+
+        // now actually submit the form
+        form.submit();
+    });
 </script>
