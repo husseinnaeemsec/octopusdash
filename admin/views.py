@@ -32,7 +32,7 @@ class BaseView:
         )
     
 
-class ModelListView(BaseView,ListView,ListviewFiltersMixin):
+class ModelListView(IsAdminIsStaffPermissionMixin,BaseView,ListView,ListviewFiltersMixin):
     paginate_by = 20
     template_name = 'od/model/list.html'
     context_object_name = 'objects'
@@ -125,7 +125,7 @@ class ModelListView(BaseView,ListView,ListviewFiltersMixin):
         return JsonResponse(form.errors, status=400)
 
 
-class ModelUpdateView(UpdateView, BaseView):
+class ModelUpdateView(IsAdminIsStaffPermissionMixin, UpdateView, BaseView):
     template_name = 'od/model/update.html'
     form_class = None
     success_url = None
@@ -139,7 +139,7 @@ class ModelUpdateView(UpdateView, BaseView):
         return response
 
 
-class ModelDeleteView(DeleteView, BaseView):
+class ModelDeleteView(IsAdminIsStaffPermissionMixin, DeleteView, BaseView):
     template_name = 'od/model/delete.html'
     form_class = None
     success_url = None
@@ -174,7 +174,7 @@ class ModelDeleteView(DeleteView, BaseView):
         return response
 
 
-class ModelCreateView(CreateView, BaseView):
+class ModelCreateView(IsAdminIsStaffPermissionMixin, CreateView, BaseView):
     template_name = 'od/model/update.html'
     form_class = None
     success_url = None
